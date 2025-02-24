@@ -20,6 +20,7 @@ import {ConfigModule} from "@nestjs/config";
         database: process.env.DB_NAME || 'buddyup',
         autoLoadEntities: true,
         synchronize: true, //disable in production
+          logging: true,
       }),
       UsersModule,
       AuthModule,
@@ -27,4 +28,5 @@ import {ConfigModule} from "@nestjs/config";
   controllers: [AppController],
   providers: [AppService],
 })
+
 export class AppModule {}
