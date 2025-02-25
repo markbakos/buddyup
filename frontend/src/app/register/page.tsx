@@ -1,10 +1,12 @@
 "use client"
 
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import { useRouter } from 'next/navigation'
+import {useSession} from "next-auth/react";
 
 export default function RegisterPage () {
     const router = useRouter()
+    const {data:session} = useSession()
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -44,6 +46,12 @@ export default function RegisterPage () {
         }
         setLoading(false)
     }
+
+    useEffect(() => {
+        if (session) {
+            router.push("/")
+        }
+    }, [session, router])
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100 text-gray-500">
