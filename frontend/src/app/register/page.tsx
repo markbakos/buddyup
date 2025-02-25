@@ -11,10 +11,18 @@ export default function RegisterPage () {
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
 
+    const passwordRegex = /^(?=.*[A-Z])(?=.*\d).{8,}$/
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
-        setLoading(true)
         setError('')
+
+        if (!passwordRegex.test(password)) {
+            setError("Password must be 8 characters or more, contain at least one uppercase letter and one number.")
+            return
+        }
+
+        setLoading(true)
 
         try {
             const res = await fetch('http://localhost:4000/users/register', {
@@ -41,10 +49,9 @@ export default function RegisterPage () {
         <div className="min-h-screen flex items-center justify-center bg-gray-100 text-gray-500">
             <div className="w-full max-w-md p-8 bg-white rounded shadow">
                 <h1 className="text-2xl font-bold mb-6 text-gray-800">Register</h1>
-                {error && <p className="text-red-500 mb-4">{error}</p>}
                 <form onSubmit={handleSubmit}>
                     <div className="mb-4">
-                        <label htmlFor="name" className="block text-sm font-medium text-gray-700">Name</label>
+                        <label htmlFor="name" className="block text-sm font-medium text-gray-700">Full Name</label>
                         <input
                             id="name"
                             type="text"
@@ -76,6 +83,7 @@ export default function RegisterPage () {
                             required
                         />
                     </div>
+                    {error && <p className="text-red-600 mb-4 text-sm">{error}</p>}
                     <button
                         type="submit"
                         disabled={loading}
@@ -84,6 +92,7 @@ export default function RegisterPage () {
                         {loading ? 'Registering...' : 'Register'}
                     </button>
                 </form>
+                <p className="text-gray-800 text-center text-xl">Already have an account?<a href="http://localhost:3000/auth/signin" className="text-blue-600 font-semibold cursor-pointer"> Sign in</a></p>
             </div>
         </div>
     )
