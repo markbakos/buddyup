@@ -5,9 +5,10 @@ import {
     CreateDateColumn,
     UpdateDateColumn,
     ManyToMany,
-    JoinTable,
+    JoinTable, OneToMany,
 } from "typeorm";
 import { Tag } from './tag.entity'
+import {AdRole} from "./ad-role.entity";
 
 @Entity('ads')
 export class Ad {
@@ -26,6 +27,10 @@ export class Ad {
     @ManyToMany(() => Tag, (tag) => tag.ads, { cascade: true, eager: true})
     @JoinTable()
     tags: Tag[]
+
+    @OneToMany(() => AdRole, (adRole) => adRole.ad, {cascade: true, eager: true} )
+    @JoinTable()
+    adRoles: AdRole[]
 
     @CreateDateColumn()
     createdAt: Date

@@ -4,6 +4,8 @@ import {Repository} from "typeorm";
 import {Ad} from "./ad.entity";
 import {Tag} from "./tag.entity";
 import {CreateAdDto} from "./dto/create-ad.dto";
+import {Role} from "./role.entity";
+import {AdRole} from "./ad-role.entity";
 
 @Injectable()
 export class AdsService {
@@ -13,10 +15,16 @@ export class AdsService {
 
        @InjectRepository(Tag)
        private tagsRepository: Repository<Tag>,
+
+       @InjectRepository(Role)
+       private rolesRepository: Repository<Role>,
+
+       @InjectRepository(AdRole)
+       private adRolesRepository: Repository<AdRole>,
     ) {}
 
     async createAd(CreateAdDto: CreateAdDto): Promise<Ad> {
-        const { title, description, tags, metadata } = CreateAdDto;
+        const { title, description, tags, roles, metadata } = CreateAdDto;
 
         const ad = this.adsRepository.create({ title, description, metadata });
 
@@ -33,7 +41,30 @@ export class AdsService {
             );
         }
 
-        return this.adsRepository.save(ad);
+        const savedAd = await this.adsRepository.save(ad);
+
+        if (roles && roles.length > 0) {
+            for ( const roleDto of roles) {
+                let role = await this.rolesRepository.findOne({ where: { name: roleDto.name }});
+                if (!role) {
+                    role = this.rolesRepository.create({ name: roleDto.name });
+                    await this.rolesRepository.save(role);
+                }
+
+                const adRole = this.adRolesRepository.create({
+                    ad: savedAd,
+                    role,
+                    isOpen: roleDto.isOpen !== undefined ? roleDto.isOpen : true,
+                });
+                await this.adRolesRepository.save(adRole);
+            }
+            const reloadedAd = await this.adsRepository.findOne({ where: { id: savedAd.id}});
+            if (!reloadedAd) {
+                throw new Error('Ad not found');
+            }
+            return reloadedAd
+        }
+        return savedAd
     }
 
     async searchAds(keywords?: string, tags?: string[]): Promise<Ad[]> {
