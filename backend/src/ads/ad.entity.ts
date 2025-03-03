@@ -28,8 +28,7 @@ export class Ad {
     @JoinTable()
     tags: Tag[]
 
-    @OneToMany(() => AdRole, (adRole) => adRole.ad, {cascade: true, eager: true} )
-    @JoinTable()
+    @OneToMany(() => AdRole, (adRole) => adRole.ad, {cascade: true} )
     adRoles: AdRole[]
 
     @CreateDateColumn()

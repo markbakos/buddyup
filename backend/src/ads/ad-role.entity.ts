@@ -10,7 +10,7 @@ export class AdRole {
     @ManyToOne(() => Ad, (ad) => ad.adRoles, {onDelete: 'CASCADE'})
     ad: Ad
 
-    @ManyToOne(() => Role, (role) => role.adRoles, {eager: true})
+    @ManyToOne(() => Role, (role) => role.adRoles)
     role: Role
 
     @Column({ default: true})
