@@ -13,7 +13,6 @@ export class AdsController {
         return this.adsService.createAd(createAdDto);
     }
 
-    @UseGuards(JwtAuthGuard)
     @Get()
     async searchAds(
         @Query('keywords') keywords?: string,
