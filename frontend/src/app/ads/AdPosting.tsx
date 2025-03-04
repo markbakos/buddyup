@@ -11,7 +11,7 @@ export default function AdPosting({id, title, description, metadata, tags, adRol
 
     return (
         <div
-            className="w-[90vw] md:w-1/4 mx-auto max-w-md bg-white rounded-lg shadow-md overflow-hidden transition-shadow duration-300 hover:shadow-lg relative"
+            className="w-[80vw] md:w-full mx-auto md:mx-0 bg-white rounded-lg shadow-md overflow-hidden transition-shadow duration-300 hover:shadow-lg relative"
             style={{height: "400px"}}
         >
             <div className="p-6 h-full flex flex-col">

@@ -1,9 +1,11 @@
 "use client"
 
 import {useRouter, useSearchParams} from "next/navigation";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import AdPosting from "@/app/ads/AdPosting";
 import {AdsResponse} from "@/types/ads";
+import {Search} from "lucide-react";
+import Header from "@/app/components/Header";
 
 export default function AdsPage() {
     const router = useRouter()
@@ -13,6 +15,8 @@ export default function AdsPage() {
     const [error, setError] = useState<string | null>(null)
 
     const [loading, setLoading] = useState(false)
+
+    const inputRef = useRef<HTMLInputElement>(null)
 
     useEffect(() => {
         const newParams = new URLSearchParams(searchParams.toString())
@@ -52,38 +56,75 @@ export default function AdsPage() {
         fetchAds()
     }, [keywords, router, searchParams])
 
-    const handleKeywordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setKeywords(e.target.value)
+    const handleKeywordChange = () => {
+        if(inputRef.current) {
+            setKeywords(inputRef.current.value)
+        }
+    }
+
+    const handleKeyDownSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === "Enter") {
+            handleKeywordChange()
+        }
     }
 
     return (
-        <div className="container mx-auto px-4 py-8 max-w-5xl text-gray-800">
-            <div className="w-10/12">
-                <input
-                    type="text"
-                    placeholder="Search ads..."
-                    value={keywords}
-                    onChange={handleKeywordChange}
-                    className="w-1/3 p-3 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                />
-            </div>
+        <div className="bg-gray-800 w-screen min-h-screen">
+            <Header />
+            <div className="max-w-7xl px-4 mx-auto sm:px-6 lg:px-8 py-5">
+                <div className="mb-8 relative w-1/2 md:w-1/3">
+                    <input
+                        ref={inputRef}
+                        type="text"
+                        placeholder="Search ad listings..."
+                        onKeyDown={handleKeyDownSearch}
+                        className="w-full p-4 pr-12 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
+                    />
+                    <Search
+                        onClick={handleKeywordChange}
+                        className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer"
+                        size={24}
+                    />
+                </div>
 
-            <div className="grid grid-cols-4">
-                {adsData ? adsData.ads.map((ad) => (
-                        <AdPosting
-                            key={ad.id}
-                            id={ad.id}
-                            title={ad.title}
-                            description={ad.description}
-                            metadata={ad.metadata}
-                            tags={ad.tags}
-                            adRoles={ad.adRoles}
-                            createdAt={ad.createdAt}
-                            updatedAt={ad.updatedAt}
-                        />
-                )) :
-                    <h1>No ads found</h1>
-                }
+                {loading && (
+                    <div className="text-center py-8">
+                        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto"></div>
+                    </div>
+                )}
+
+                {error && (
+                    <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-6"
+                         role="alert">
+                        <strong className="font-bold">Error: </strong>
+                        <span className="block sm:inline">{error}</span>
+                    </div>
+                )}
+
+                {!loading && !error && (
+                    <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+                        {adsData && adsData.ads.length > 0 ? (
+                            adsData.ads.map((ad) => (
+                                <AdPosting
+                                    key={ad.id}
+                                    id={ad.id}
+                                    title={ad.title}
+                                    description={ad.description}
+                                    metadata={ad.metadata}
+                                    tags={ad.tags}
+                                    adRoles={ad.adRoles}
+                                    createdAt={ad.createdAt}
+                                    updatedAt={ad.updatedAt}
+                                />
+                            ))
+                        ) : (
+                            <div className="text-center py-8 text-gray-600">
+                                <h2 className="text-xl font-semibold">No job listings found</h2>
+                                <p className="mt-2">Try adjusting your search criteria</p>
+                            </div>
+                        )}
+                    </div>
+                )}
             </div>
         </div>
     )
