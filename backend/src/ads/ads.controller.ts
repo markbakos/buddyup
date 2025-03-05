@@ -2,6 +2,7 @@ import {Body, Controller, Get, Post, UseGuards, Query, Param} from "@nestjs/comm
 import {AdsService} from "./ads.service";
 import {CreateAdDto} from "./dto/create-ad.dto";
 import {JwtAuthGuard} from "../auth/guards/jwt-auth.guard";
+import {GetUser} from "../auth/decorators/get-user.decorator";
 
 @Controller('ads')
 export class AdsController {
@@ -9,7 +10,11 @@ export class AdsController {
 
     @UseGuards(JwtAuthGuard)
     @Post()
-    async createAd(@Body() createAdDto: CreateAdDto) {
+    async createAd(
+        @Body() createAdDto: CreateAdDto,
+        @GetUser('userId') userId: string
+    ) {
+        createAdDto.userId = userId;
         return this.adsService.createAd(createAdDto);
     }
 

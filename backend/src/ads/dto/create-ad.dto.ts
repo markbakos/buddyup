@@ -1,4 +1,4 @@
-import {IsNotEmpty, IsOptional, IsString, IsArray, IsBoolean, ValidateNested, Length} from "class-validator";
+import {IsNotEmpty, IsOptional, IsString, IsArray, IsBoolean, ValidateNested, Length, IsUUID} from "class-validator";
 import {Type} from "class-transformer";
 
 class RoleDTO {
@@ -38,4 +38,8 @@ export class CreateAdDto {
     @ValidateNested({ each: true})
     @Type(() => RoleDTO)
     roles?: RoleDTO[]
+
+    @IsOptional()
+    @IsUUID()
+    userId: string
 }

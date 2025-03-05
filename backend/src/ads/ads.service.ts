@@ -1,4 +1,4 @@
-import {Injectable, NotFoundException} from "@nestjs/common";
+import {ForbiddenException, Injectable, NotFoundException} from "@nestjs/common";
 import {InjectRepository} from "@nestjs/typeorm";
 import {Repository} from "typeorm";
 import {Ad} from "./ad.entity";
@@ -6,6 +6,7 @@ import {Tag} from "./tag.entity";
 import {CreateAdDto} from "./dto/create-ad.dto";
 import {Role} from "./role.entity";
 import {AdRole} from "./ad-role.entity";
+import {User} from "../users/user.entity";
 
 @Injectable()
 export class AdsService {
@@ -21,13 +22,24 @@ export class AdsService {
 
         @InjectRepository(AdRole)
         private adRolesRepository: Repository<AdRole>,
+
+        @InjectRepository(User)
+        private usersRepository: Repository<User>,
     ) {}
 
     async createAd(createAdDto: CreateAdDto): Promise<Ad> {
         try {
-            const { title, summary, description, tags, roles, metadata } = createAdDto;
+            const user = await this.usersRepository.findOne({
+                where: { id: createAdDto.userId }
+            });
 
-            const ad = this.adsRepository.create({ title, summary, description, metadata });
+            if (!user) {
+                throw new ForbiddenException('User not found')
+            }
+
+            const { title, summary, description, tags, roles, metadata, userId } = createAdDto;
+
+            const ad = this.adsRepository.create({ title, summary, description, metadata, userId, user });
 
             if (tags && tags.length > 0) {
                 ad.tags = await Promise.all(
@@ -72,6 +84,7 @@ export class AdsService {
     async searchAds(
         keywords?: string,
         tags?: string[],
+        userId?: string,
         page: number = 1,
         limit: number = 10
     ): Promise<{ ads: Ad[], total: number, page: number, limit: number }> {
@@ -80,6 +93,7 @@ export class AdsService {
                 .leftJoinAndSelect('ad.tags', 'tag')
                 .leftJoinAndSelect('ad.adRoles', 'adRole')
                 .leftJoinAndSelect('adRole.role', 'role')
+                .leftJoinAndSelect('ad.user', 'user')
                 .skip((page - 1) * limit)
                 .take(limit);
 
@@ -92,6 +106,10 @@ export class AdsService {
 
             if (tags && tags.length > 0) {
                 query.andWhere('tag.name IN (:...tags)', { tags });
+            }
+
+            if (userId) {
+                query.andWhere('ad.user_id = :userId', { userId });
             }
 
             const [ads, total] = await query.getManyAndCount();
@@ -118,7 +136,7 @@ export class AdsService {
         try {
             const ad = await this.adsRepository.findOne({
                 where: { id },
-                relations: ['tags', 'adRoles', 'adRoles.role']
+                relations: ['tags', 'adRoles', 'adRoles.role', 'user']
             });
 
             if (!ad) {
