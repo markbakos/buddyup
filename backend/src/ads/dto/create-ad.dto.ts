@@ -1,4 +1,4 @@
-import {IsNotEmpty, IsOptional, IsString, IsArray, IsBoolean, ValidateNested} from "class-validator";
+import {IsNotEmpty, IsOptional, IsString, IsArray, IsBoolean, ValidateNested, Length} from "class-validator";
 import {Type} from "class-transformer";
 
 class RoleDTO {
@@ -15,6 +15,11 @@ export class CreateAdDto {
     @IsNotEmpty()
     @IsString()
     title: string
+
+    @IsNotEmpty()
+    @IsString()
+    @Length(0, 100)
+    summary: string
     
     @IsNotEmpty()
     @IsString()

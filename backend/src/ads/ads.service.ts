@@ -25,9 +25,9 @@ export class AdsService {
 
     async createAd(createAdDto: CreateAdDto): Promise<Ad> {
         try {
-            const { title, description, tags, roles, metadata } = createAdDto;
+            const { title, summary, description, tags, roles, metadata } = createAdDto;
 
-            const ad = this.adsRepository.create({ title, description, metadata });
+            const ad = this.adsRepository.create({ title, summary, description, metadata });
 
             if (tags && tags.length > 0) {
                 ad.tags = await Promise.all(

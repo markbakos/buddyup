@@ -19,6 +19,9 @@ export class Ad {
     title: string
 
     @Column()
+    summary: string
+
+    @Column()
     description: string
 
     @Column({type: 'jsonb', nullable: true})
