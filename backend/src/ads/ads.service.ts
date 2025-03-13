@@ -93,7 +93,6 @@ export class AdsService {
                 .leftJoinAndSelect('ad.tags', 'tag')
                 .leftJoinAndSelect('ad.adRoles', 'adRole')
                 .leftJoinAndSelect('adRole.role', 'role')
-                .leftJoinAndSelect('ad.user', 'user')
                 .skip((page - 1) * limit)
                 .take(limit);
 
