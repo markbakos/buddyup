@@ -22,9 +22,11 @@ export class AdsController {
     async searchAds(
         @Query('keywords') keywords?: string,
         @Query('tags') tags?: string,
+        @Query('location') location?: string,
+        @Query('userId') userId?: string,
     ) {
         const tagsArray = tags ? tags.split(',').map((t) => t.trim()) : undefined;
-        return this.adsService.searchAds(keywords, tagsArray);
+        return this.adsService.searchAds(keywords, tagsArray, location, userId);
     }
 
     @UseGuards(JwtAuthGuard)

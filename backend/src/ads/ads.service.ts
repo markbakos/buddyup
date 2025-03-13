@@ -84,6 +84,7 @@ export class AdsService {
     async searchAds(
         keywords?: string,
         tags?: string[],
+        location?: string,
         userId?: string,
         page: number = 1,
         limit: number = 10
@@ -105,6 +106,10 @@ export class AdsService {
 
             if (tags && tags.length > 0) {
                 query.andWhere('tag.name IN (:...tags)', { tags });
+            }
+
+            if (location) {
+                query.andWhere('ad.location ILIKE :location', { location });
             }
 
             if (userId) {
