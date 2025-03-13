@@ -24,6 +24,10 @@ export class CreateAdDto {
     @IsNotEmpty()
     @IsString()
     description: string
+
+    @IsNotEmpty()
+    @IsString()
+    location: string
     
     @IsOptional()
     @IsArray()

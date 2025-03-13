@@ -37,9 +37,9 @@ export class AdsService {
                 throw new ForbiddenException('User not found')
             }
 
-            const { title, summary, description, tags, roles, metadata, userId } = createAdDto;
+            const { title, summary, description, location, tags, roles, metadata, userId } = createAdDto;
 
-            const ad = this.adsRepository.create({ title, summary, description, metadata, userId, user });
+            const ad = this.adsRepository.create({ title, summary, description, location, metadata, userId, user });
 
             if (tags && tags.length > 0) {
                 ad.tags = await Promise.all(

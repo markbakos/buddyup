@@ -25,6 +25,9 @@ export class Ad {
     @Column()
     description: string
 
+    @Column()
+    location: string
+
     @Column({type: 'jsonb', nullable: true})
     metadata: Record<string, any>
 
