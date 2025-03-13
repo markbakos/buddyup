@@ -6,6 +6,7 @@ import AdPosting from "@/app/ads/AdPosting";
 import {AdsResponse} from "@/types/ads";
 import {Search} from "lucide-react";
 import Header from "@/app/components/Header";
+import axios from "axios";
 
 export default function AdsPage() {
     const router = useRouter()
@@ -35,15 +36,10 @@ export default function AdsPage() {
             setError(null)
 
             try {
-                const response = await fetch(`http://localhost:4000/ads?${newParams.toString()}`)
+                const response = await axios.get(`http://localhost:4000/ads?${newParams.toString()}`)
 
-                if (!response.ok) {
-                    throw new Error(`Failed to fetch ads: ${response.status} ${response.statusText}`)
-                }
-
-                const data = await response.json()
-                setAdsData(data)
-                console.log(adsData)
+                console.log(response.data)
+                setAdsData(response.data)
             } catch (e) {
                 console.error("Error fetching ads: ", e)
                 setError(e instanceof Error ? e.message : "Failed to fetch ads")
@@ -72,20 +68,24 @@ export default function AdsPage() {
         <div className="bg-gray-800 w-screen min-h-screen">
             <Header />
             <div className="max-w-7xl px-4 mx-auto sm:px-6 lg:px-8 py-5">
-                <div className="mb-8 relative w-1/2 md:w-1/3">
-                    <input
-                        ref={inputRef}
-                        type="text"
-                        placeholder="Search ad listings..."
-                        onKeyDown={handleKeyDownSearch}
-                        className="w-full p-4 pr-12 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
-                    />
-                    <Search
-                        onClick={handleKeywordChange}
-                        className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer"
-                        size={24}
-                    />
+                <div className="w-full flex">
+                    <div className="mb-8 relative w-1/2 md:w-1/3">
+                        <input
+                            ref={inputRef}
+                            type="text"
+                            placeholder="Search ad listings..."
+                            onKeyDown={handleKeyDownSearch}
+                            className="w-full p-4 pr-12 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
+                        />
+                        <Search
+                            onClick={handleKeywordChange}
+                            className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer"
+                            size={24}
+                        />
+                    </div>
                 </div>
+
+
 
                 {loading && (
                     <div className="text-center py-8">

@@ -3,6 +3,7 @@
 import React, {useEffect, useState} from 'react'
 import { useRouter } from 'next/navigation'
 import {useSession} from "next-auth/react";
+import axios from "axios";
 
 export default function RegisterPage () {
     const router = useRouter()
@@ -27,20 +28,13 @@ export default function RegisterPage () {
         setLoading(true)
 
         try {
-            const res = await fetch('http://localhost:4000/users/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({name, email, password})
+            await axios.post('http://localhost:4000/users/register', {
+                name,
+                email,
+                password,
             })
 
-            if (!res.ok) {
-                const errorData = await res.json()
-                setError(errorData.message || 'Registration failed')
-            } else {
-                router.push('/')
-            }
+            router.push('/')
         } catch (e) {
             setError('An error occured. Please try again.')
         }
