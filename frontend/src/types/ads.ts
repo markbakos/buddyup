@@ -19,7 +19,10 @@ export interface AdRole {
 export interface Ad {
     id: string
     title: string
+    summary: string
     description: string
+    location: string
+    userId: string
     metadata: Record<string, any>
     tags: Tag[]
     adRoles: AdRole[]
