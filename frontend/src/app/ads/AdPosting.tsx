@@ -5,7 +5,7 @@ import {ChevronDown, ChevronUp, Clock, ExternalLink } from "lucide-react";
 import Link from "next/link";
 import React, {useRef, useState } from "react";
 
-export default function AdPosting({id, title, description, metadata, tags, adRoles, createdAt, updatedAt}: Ad) {
+export default function AdPosting({id, title, summary, description, metadata, tags, adRoles, createdAt, updatedAt}: Ad) {
     const [isRolesOpen, setIsRolesOpen] = useState(false)
     const dropdownRef = useRef<HTMLDivElement>(null)
 
@@ -16,7 +16,7 @@ export default function AdPosting({id, title, description, metadata, tags, adRol
         >
             <div className="p-6 h-full flex flex-col">
                 <h2 className="text-2xl font-bold text-gray-800 mb-2 line-clamp-2">{title}</h2>
-                <p className="text-gray-600 mb-4 flex-grow overflow-hidden line-clamp-4">{description}</p>
+                <p className="text-gray-600 mb-4 flex-grow overflow-hidden line-clamp-4">{summary}</p>
 
                 <div className="mt-auto space-y-2">
                     <button
@@ -29,7 +29,7 @@ export default function AdPosting({id, title, description, metadata, tags, adRol
                     </button>
 
                     <Link
-                        href={`/ad/${id}`}
+                        href={`/ads/${id}`}
                         className="inline-flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus-visible:ring focus-visible:ring-blue-500 focus-visible:ring-opacity-50 transition-colors duration-200"
                     >
                         View Details
@@ -68,7 +68,7 @@ export default function AdPosting({id, title, description, metadata, tags, adRol
                         <p className="text-gray-500">No roles advertised.</p>
                     )}
                     <Link
-                        href={`/ad/${id}`}
+                        href={`/ads/${id}`}
                         className="mt-4 inline-flex items-center justify-center w-full px-4 py-2 text-sm font-semibold text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus-visible:ring focus-visible:ring-blue-500 focus-visible:ring-opacity-50 transition-colors duration-200"
                     >
                         Apply now!
