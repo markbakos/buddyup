@@ -29,8 +29,7 @@ export class AdsController {
         return this.adsService.searchAds(keywords, tagsArray, location, userId);
     }
 
-    @UseGuards(JwtAuthGuard)
-    @Get()
+    @Get(':id')
     async getAdById(@Param('id') id:string) {
         return this.adsService.getAdById(id);
     }
