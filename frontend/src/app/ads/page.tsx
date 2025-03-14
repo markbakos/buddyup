@@ -109,8 +109,11 @@ export default function AdsPage() {
                                     key={ad.id}
                                     id={ad.id}
                                     title={ad.title}
+                                    summary={ad.summary}
                                     description={ad.description}
+                                    location={ad.location}
                                     metadata={ad.metadata}
+                                    userId={ad.userId}
                                     tags={ad.tags}
                                     adRoles={ad.adRoles}
                                     createdAt={ad.createdAt}
