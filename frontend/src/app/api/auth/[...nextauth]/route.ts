@@ -1,6 +1,5 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { NextResponse } from "next/server";
 
 const handler = NextAuth({
     providers: [
@@ -29,7 +28,7 @@ const handler = NextAuth({
                         token: data.access_token,
                     }
                 }
-                return null;
+                return null
             },
         }),
     ],
@@ -41,7 +40,7 @@ const handler = NextAuth({
             if (user) {
                 token.accessToken = user.token
             }
-            return token;
+            return token
         },
         async session({ session, token }) {
             session.accessToken = token.accessToken
