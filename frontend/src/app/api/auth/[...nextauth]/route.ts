@@ -19,13 +19,13 @@ const handler = NextAuth({
                     }),
                 })
 
-                const data = await res.json();
+                const data = await res.json()
 
                 if (res.ok && data.access_token) {
                     return {
                         id: data.userId || "1",
-                        email: credentials?.email,
-                        token: data.access_token,
+                        email: credentials?.email || "",
+                        accessToken: data.access_token,
                     }
                 }
                 return null
@@ -34,11 +34,12 @@ const handler = NextAuth({
     ],
     session: {
         strategy: "jwt",
+        maxAge: 60 * 60,
     },
     callbacks: {
         async jwt({ token, user }) {
             if (user) {
-                token.accessToken = user.token
+                token.accessToken = user.accessToken
             }
             return token
         },
