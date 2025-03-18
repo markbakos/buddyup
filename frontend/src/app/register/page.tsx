@@ -3,7 +3,7 @@
 import React, {useEffect, useState} from 'react'
 import { useRouter } from 'next/navigation'
 import {useSession} from "next-auth/react";
-import axios from "axios";
+import api from '@/lib/api';
 
 export default function RegisterPage () {
     const router = useRouter()
@@ -28,7 +28,7 @@ export default function RegisterPage () {
         setLoading(true)
 
         try {
-            await axios.post('http://localhost:4000/users/register', {
+            await api.post('/users/register', {
                 name,
                 email,
                 password,

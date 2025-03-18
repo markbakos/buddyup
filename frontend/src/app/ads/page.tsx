@@ -6,7 +6,7 @@ import AdPosting from "@/app/ads/AdPosting";
 import {AdsResponse} from "@/types/ads";
 import {Search} from "lucide-react";
 import Header from "@/app/components/Header";
-import axios from "axios";
+import api from '@/lib/api';
 
 export default function AdsPage() {
     const router = useRouter()
@@ -36,7 +36,7 @@ export default function AdsPage() {
             setError(null)
 
             try {
-                const response = await axios.get(`http://localhost:4000/ads?${newParams.toString()}`)
+                const response = await api.get(`/ads?${newParams.toString()}`)
 
                 console.log(response.data)
                 setAdsData(response.data)

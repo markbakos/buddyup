@@ -3,7 +3,7 @@
 import {useParams, useRouter} from "next/navigation";
 import {useEffect, useState} from "react";
 import {Ad} from "@/types/ads";
-import axios from "axios";
+import api from '@/lib/api';
 import {ArrowLeft, Calendar, MapPin} from "lucide-react";
 import Header from "@/app/components/Header";
 import Link from "next/link";
@@ -32,7 +32,7 @@ export default function AdDetailsPage() {
             setError(null)
 
             try {
-                const response = await axios.get(`http://localhost:4000/ads/${adId}`)
+                const response = await api.get(`/ads/${adId}`)
                 console.log(response.data)
                 setAd(response.data)
             }
