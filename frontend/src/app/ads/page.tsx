@@ -336,6 +336,7 @@ export default function AdsPage() {
                                                         location={ad.location}
                                                         metadata={ad.metadata}
                                                         userId={ad.userId}
+                                                        user={ad.user}
                                                         tags={ad.tags}
                                                         adRoles={ad.adRoles}
                                                         createdAt={ad.createdAt}

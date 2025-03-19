@@ -1,3 +1,5 @@
+import { User } from "./user"
+
 export interface Tag {
     id: string
     name: string
@@ -23,6 +25,7 @@ export interface Ad {
     description: string
     location: string
     userId: string
+    user: User
     metadata: Record<string, any>
     tags: Tag[]
     adRoles: AdRole[]
