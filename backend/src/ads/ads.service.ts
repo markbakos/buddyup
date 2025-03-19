@@ -87,19 +87,38 @@ export class AdsService {
         location?: string,
         userId?: string,
         page: number = 1,
-        limit: number = 10
+        limit: number = 10,
+        roles?: string[],
+        status?: string[],
+        sort?: string
     ): Promise<{ ads: Ad[], total: number, page: number, limit: number }> {
         try {
             const query = this.adsRepository.createQueryBuilder('ad')
                 .leftJoinAndSelect('ad.tags', 'tag')
                 .leftJoinAndSelect('ad.adRoles', 'adRole')
                 .leftJoinAndSelect('adRole.role', 'role')
+                .leftJoinAndSelect('ad.user', 'user')
                 .skip((page - 1) * limit)
-                .take(limit);
+                .take(limit)
+                .orderBy('ad.createdAt', 'DESC');
+
+            if (sort) {
+                const now = new Date();
+                
+                if (sort === 'week') {
+                    const oneWeekAgo = new Date(now);
+                    oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+                    query.andWhere('ad.createdAt >= :oneWeekAgo', { oneWeekAgo });
+                } else if (sort === 'month') {
+                    const oneMonthAgo = new Date(now);
+                    oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
+                    query.andWhere('ad.createdAt >= :oneMonthAgo', { oneMonthAgo });
+                }
+            }
 
             if (keywords) {
                 query.andWhere(
-                    '(ad.title ILIKE :keywords OR ad.description ILIKE :keywords)',
+                    '(ad.title ILIKE :keywords OR ad.description ILIKE :keywords OR ad.summary ILIKE :keywords)',
                     { keywords: `%${keywords}%`}
                 );
             }
@@ -108,12 +127,27 @@ export class AdsService {
                 query.andWhere('tag.name IN (:...tags)', { tags });
             }
 
+            if (roles && roles.length > 0) {
+                query.andWhere('role.name IN (:...roles)', { roles });
+            }
+
+            if (status && status.length > 0) {
+                const isOpen = status.includes('open');
+                const isClosed = status.includes('closed');
+                
+                if (isOpen && !isClosed) {
+                    query.andWhere('adRole.isOpen = :isOpen', { isOpen: true });
+                } else if (!isOpen && isClosed) {
+                    query.andWhere('adRole.isOpen = :isOpen', { isOpen: false });
+                }
+            }
+
             if (location) {
-                query.andWhere('ad.location ILIKE :location', { location });
+                query.andWhere('ad.location ILIKE :location', { location: `%${location}%` });
             }
 
             if (userId) {
-                query.andWhere('ad.user_id = :userId', { userId });
+                query.andWhere('ad.userId = :userId', { userId });
             }
 
             const [ads, total] = await query.getManyAndCount();
