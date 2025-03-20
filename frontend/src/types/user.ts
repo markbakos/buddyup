@@ -47,7 +47,7 @@ export interface SocialLinks {
     platform: string
 }
 
-export interface ForeignUserProfile {
+export interface UserStats {
     id: string
     email: string
     name: string

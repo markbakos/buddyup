@@ -11,7 +11,15 @@ export class ProfileController {
 
     @Get()
     async getProfile(@GetUser('userId') userId: string) {
-        return this.usersService.getProfile(userId);
+        const [user, profile] = await Promise.all([
+            this.usersService.getUserWithStats(userId),
+            this.usersService.getProfile(userId)
+        ]);
+
+        return {
+            ...user,
+            profile
+        };
     }
 
     @Put()
