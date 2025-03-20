@@ -1,5 +1,6 @@
-import {Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany} from "typeorm";
+import {Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany, OneToOne} from "typeorm";
 import {Ad} from "../ads/ad.entity";
+import {UserProfile} from "./user-profile.entity";
 
 @Entity('users')
 export class User {
@@ -15,8 +16,17 @@ export class User {
     @Column()
     name: string;
 
+    @Column({ nullable: true })
+    jobTitle: string;
+
+    @Column({ type: 'text', nullable: true })
+    shortBio: string;
+
     @OneToMany(() => Ad, ad => ad.user)
-    ads: Ad[]
+    ads: Ad[];
+
+    @OneToOne(() => UserProfile, profile => profile.user)
+    profile: UserProfile;
 
     @CreateDateColumn()
     createdAt: Date;
