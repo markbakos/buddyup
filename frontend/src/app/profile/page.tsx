@@ -9,6 +9,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 
 import { Mail, Calendar, MapPin, Briefcase, Edit, Settings } from "lucide-react"
 
+import Link from "next/link"
 import {useEffect, useState} from 'react'
 import {useSession} from "next-auth/react";
 import {useRouter} from "next/navigation";
@@ -185,13 +186,15 @@ export default function Profile() {
                                     </div>
 
                                     <div className="mt-6 flex flex-col gap-2">
-                                        <Button className="w-full">
-                                            <Edit className="mr-2 h-4 w-4"/>
-                                            Edit Profile
-                                        </Button>
-                                        <Button variant="outline" className="w-full">
-                                            <Settings className="mr-2 h-4 w-4"/>
-                                            Account Settings
+                                        <Link href="/profile/edit">
+                                            <Button className="w-full">
+                                                <Edit className="mr-2 h-4 w-4"/>
+                                                Edit Profile
+                                            </Button>
+                                        </Link>
+                                            <Button variant="outline" className="w-full">
+                                                <Settings className="mr-2 h-4 w-4"/>
+                                                Account Settings
                                         </Button>
                                     </div>
                                 </CardContent>
@@ -224,9 +227,8 @@ export default function Profile() {
                                             <div className="mt-6">
                                                 <h3 className="text-lg font-medium mb-3">Experience</h3>
                                                 <div className="space-y-4">
-
                                                     {user?.profile.experience?.map((experience) => (
-                                                        <div className="border-l-2 border-primary pl-4 py-1">
+                                                        <div key={experience.company} className="border-l-2 border-primary pl-4 py-1">
                                                             <h4 className="font-medium">{experience.company}</h4>
                                                             <p className="text-sm text-muted-foreground">{new Date(experience.startDate).toLocaleDateString()} -
                                                                 {experience?.endDate ? new Date(experience.endDate).toLocaleDateString() : " Present"}</p>
