@@ -262,6 +262,11 @@ export default function Profile() {
                                         </CardHeader>
                                         <CardContent>
                                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                {user?.ads?.length === 0 && (
+                                                    <div className="text-center text-muted-foreground">
+                                                        No projects yet
+                                                    </div>
+                                                )}
                                                 {user?.ads?.map((ad: Ad) => (
                                                     <Card key={ad.id} className="overflow-hidden">
                                                         <div
