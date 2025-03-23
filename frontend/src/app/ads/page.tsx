@@ -6,6 +6,7 @@ import AdPosting from "@/app/ads/AdPosting"
 import type { AdsResponse } from "@/types/ads"
 import Header from "@/app/components/Header"
 import api from "@/lib/api"
+import Link from "next/link"
 
 import { Search, ArrowUpDown, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -172,7 +173,9 @@ export default function AdsPage() {
                             <h1 className="text-3xl font-bold tracking-tight">Discover Opportunities</h1>
                             <p className="text-muted-foreground mt-1">Find your next collaboration or project</p>
                         </div>
-                        <Button variant="default">Post New Ad</Button>
+                        <Link href="/ads/post">
+                            <Button variant="default">Post New Ad</Button>
+                        </Link>
                     </div>
 
                     <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-8">
