@@ -23,6 +23,7 @@ export default function Header() {
         { name: "Home", icon: Home, href: "/" },
         { name: "Discover", icon: Newspaper, href: "/ads" },
         { name: "Messages", icon: MessageSquare, href: "/messages" },
+        { name: "Alerts", icon: Bell, href: "/alerts" },
     ]
 
     useEffect(() => {
@@ -86,16 +87,6 @@ export default function Header() {
                                     <span className="text-xs mt-1 hidden sm:inline">{item.name}</span>
                                 </Link>
                             ))}
-
-                            <button
-                                className={`flex flex-col items-center p-2 rounded-lg transition-colors relative ${
-                                    scrolled ? "hover:bg-gray-100 text-gray-700" : "hover:bg-white/10 text-white"
-                                }`}
-                            >
-                                <Bell className="h-5 w-5"/>
-                                <span className="text-xs mt-1 hidden sm:inline">Alerts</span>
-                                <span className="absolute top-0 right-0 h-2 w-2 bg-red-500 rounded-full"></span>
-                            </button>
                         </nav>
 
                         {session ? (
@@ -138,7 +129,7 @@ export default function Header() {
                                     <Button
                                         variant="outline"
                                         size="sm"
-                                        className={scrolled ? "" : "text-white border-white hover:text-white"}
+                                        className="text-gray-800 border-gray-800 hover:text-gray-900"
                                     >
                                         Sign in
                                     </Button>
