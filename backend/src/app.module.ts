@@ -6,6 +6,7 @@ import {UsersModule} from "./users/users.module";
 import {AuthModule} from "./auth/auth.module";
 import {ConfigModule} from "@nestjs/config";
 import {AdsModule} from "./ads/ads.module";
+import { ConnectionsModule } from './connections/connections.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import {AdsModule} from "./ads/ads.module";
       UsersModule,
       AuthModule,
       AdsModule,
+      ConnectionsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

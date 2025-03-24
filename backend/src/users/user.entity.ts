@@ -1,6 +1,7 @@
 import {Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany, OneToOne} from "typeorm";
 import {Ad} from "../ads/ad.entity";
 import {UserProfile} from "./user-profile.entity";
+import { Connection } from '../connections/entities/connection.entity';
 
 @Entity('users')
 export class User {
@@ -33,4 +34,10 @@ export class User {
 
     @UpdateDateColumn()
     updatedAt: Date;
+
+    @OneToMany(() => Connection, connection => connection.sender)
+    sentConnections: Connection[];
+
+    @OneToMany(() => Connection, connection => connection.receiver)
+    receivedConnections: Connection[];
 }
