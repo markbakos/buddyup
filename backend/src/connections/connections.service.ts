@@ -5,6 +5,8 @@ import { Connection, ConnectionStatus } from './entities/connection.entity';
 import { User } from '../users/user.entity';
 import { CreateConnectionDto } from './dto/create-connection.dto';
 import { RespondConnectionDto } from './dto/respond-connection.dto';
+import { ConnectionDto } from './dto/connection.dto';
+import { plainToInstance } from 'class-transformer';
 
 @Injectable()
 export class ConnectionsService {
@@ -15,7 +17,19 @@ export class ConnectionsService {
         private usersRepository: Repository<User>,
     ) {}
 
-    async sendConnectionRequest(senderId: string, createConnectionDto: CreateConnectionDto): Promise<Connection> {
+    private transformConnection(connection: Connection): ConnectionDto {
+        return plainToInstance(ConnectionDto, connection, {
+            excludeExtraneousValues: true
+        });
+    }
+
+    private transformConnections(connections: Connection[]): ConnectionDto[] {
+        return plainToInstance(ConnectionDto, connections, {
+            excludeExtraneousValues: true
+        });
+    }
+
+    async sendConnectionRequest(senderId: string, createConnectionDto: CreateConnectionDto): Promise<ConnectionDto> {
         const { receiverId } = createConnectionDto;
 
         const [sender, receiver] = await Promise.all([
@@ -48,10 +62,11 @@ export class ConnectionsService {
             status: ConnectionStatus.PENDING
         });
 
-        return this.connectionsRepository.save(connection);
+        const savedConnection = await this.connectionsRepository.save(connection);
+        return this.transformConnection(savedConnection);
     }
 
-    async respondToConnection(userId: string, connectionId: string, response: RespondConnectionDto): Promise<Connection> {
+    async respondToConnection(userId: string, connectionId: string, response: RespondConnectionDto): Promise<ConnectionDto> {
         const connection = await this.connectionsRepository.findOne({
             where: { id: connectionId, receiverId: userId, status: ConnectionStatus.PENDING },
             relations: ['sender', 'receiver']
@@ -64,25 +79,28 @@ export class ConnectionsService {
         connection.status = response.status;
         connection.respondedAt = new Date();
 
-        return this.connectionsRepository.save(connection);
+        const savedConnection = await this.connectionsRepository.save(connection);
+        return this.transformConnection(savedConnection);
     }
 
-    async getConnectionRequests(userId: string): Promise<Connection[]> {
-        return this.connectionsRepository.find({
+    async getConnectionRequests(userId: string): Promise<ConnectionDto[]> {
+        const connections = await this.connectionsRepository.find({
             where: { receiverId: userId, status: ConnectionStatus.PENDING },
             relations: ['sender'],
             order: { createdAt: 'DESC' }
         });
+        return this.transformConnections(connections);
     }
 
-    async getConnections(userId: string): Promise<Connection[]> {
-        return this.connectionsRepository.find({
+    async getConnections(userId: string): Promise<ConnectionDto[]> {
+        const connections = await this.connectionsRepository.find({
             where: [
                 { senderId: userId, status: ConnectionStatus.ACCEPTED },
                 { receiverId: userId, status: ConnectionStatus.ACCEPTED }
             ],
             relations: ['sender', 'receiver']
         });
+        return this.transformConnections(connections);
     }
 
     async removeConnection(userId: string, connectionId: string): Promise<void> {
