@@ -7,7 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
 import { Skeleton } from "@/components/ui/skeleton"
 
-import { Mail, Calendar, MapPin, Briefcase, Edit, Settings } from "lucide-react"
+import { Mail, Calendar, MapPin, Briefcase, Edit, Settings, ExternalLink } from "lucide-react"
 
 import Link from "next/link"
 import {useEffect, useState} from 'react'
@@ -261,29 +261,42 @@ export default function Profile() {
                                             <CardDescription>Projects you're currently working on</CardDescription>
                                         </CardHeader>
                                         <CardContent>
-                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            <div className="space-y-4">
                                                 {user?.ads?.length === 0 && (
                                                     <div className="text-center text-muted-foreground">
                                                         No projects yet
                                                     </div>
                                                 )}
                                                 {user?.ads?.map((ad: Ad) => (
-                                                    <Card key={ad.id} className="overflow-hidden">
-                                                        <div
-                                                            className="h-32 bg-gradient-to-r from-primary/20 to-primary/40 flex items-center justify-center">
-                                                            <span
-                                                                className="text-primary font-medium">Project {ad.id}</span>
-                                                        </div>
-                                                        <CardHeader className="p-4">
-                                                            <CardTitle className="text-base">Project
-                                                                Name {ad.title}</CardTitle>
-                                                        </CardHeader>
-                                                        <CardFooter className="p-4 pt-0 flex justify-between">
-                                                            <Button variant="ghost" size="sm">
-                                                                View
-                                                            </Button>
-                                                        </CardFooter>
-                                                    </Card>
+                                                   <Card key={ad.id} className="overflow-hidden">
+                                                   <CardHeader className="pb-2">
+                                                     <div className="flex justify-between items-start">
+                                                       <div>
+                                                         <CardTitle className="text-lg">{ad.title}</CardTitle>
+                                                         <CardDescription className="flex items-center gap-1 mt-1">
+                                                           <MapPin className="h-3.5 w-3.5" />
+                                                           {ad.location}
+                                                         </CardDescription>
+                                                       </div>
+                                                       <Button variant="ghost" size="sm" asChild>
+                                                         <Link href={`/ads/${ad.id}`}>
+                                                           <ExternalLink className="h-4 w-4" />
+                                                         </Link>
+                                                       </Button>
+                                                     </div>
+                                                   </CardHeader>
+                                                   <CardContent className="pb-2">
+                                                     <p className="text-sm text-muted-foreground">{ad.summary}</p>
+                     
+                                                     <div className="flex flex-wrap gap-1.5 mt-3">
+                                                       {ad.tags.map((tag) => (
+                                                         <Badge key={tag.id} variant="secondary" className="text-xs">
+                                                           {tag.name}
+                                                         </Badge>
+                                                       ))}
+                                                     </div>
+                                                   </CardContent>
+                                                 </Card>
                                                 ))}
                                             </div>
                                         </CardContent>
