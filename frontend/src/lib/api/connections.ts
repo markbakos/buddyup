@@ -47,7 +47,7 @@ export const connectionsApi = {
     },
 
     getConnections: async () => {
-        const response = await api.get<Connection[]>('/connections')
+        const response = await api.get<Connection[]>('/connections/all')
         return response.data
     },
 
@@ -61,7 +61,7 @@ export const connectionsApi = {
     },
 
     getConnectionStatus: async (userId: string) => {
-        const response = await api.get<ConnectionStatus | null>(`/connections/${userId}/status`)
-        return response.data;
+        const response = await api.get<ConnectionStatus | null>(`/connections/status/${userId}`)
+        return response.data
     }
 }
