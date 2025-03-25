@@ -1,6 +1,7 @@
-import { IsUUID } from 'class-validator';
+import { IsNotEmpty, IsUUID } from 'class-validator';
 
 export class CreateConnectionDto {
-    @IsUUID()
-    receiverId: string;
+  @IsNotEmpty()
+  @IsUUID()
+  receiverId: string;
 } 
