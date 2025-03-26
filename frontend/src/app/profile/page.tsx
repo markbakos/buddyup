@@ -7,7 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
 import { Skeleton } from "@/components/ui/skeleton"
 
-import { Mail, Calendar, MapPin, Briefcase, Edit, Settings, ExternalLink } from "lucide-react"
+import { Mail, Calendar, MapPin, Briefcase, Edit, Settings, ExternalLink, MessageSquare } from "lucide-react"
 
 import Link from "next/link"
 import {useEffect, useState} from 'react'
@@ -17,11 +17,13 @@ import Header from '@/app/components/Header';
 import { UserStats } from '@/types/user';
 import api from '@/lib/api';
 import { Ad } from "@/types/ads"
-
+import { connectionsApi } from "@/lib/api/connections"
+import { Connection } from "@/types/connections"
 export default function Profile() {
     const [user, setUser] = useState<UserStats | null>(null)
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
+    const [connections, setConnections] = useState<Connection[]>([])
 
     const {data:session, status} = useSession()
     const router = useRouter()
@@ -49,7 +51,18 @@ export default function Profile() {
             }
         }
 
+        async function fetchConnections() {
+            try {
+                const connections = await connectionsApi.getConnections()
+                setConnections(connections)
+            } catch (e) {
+                console.error("Error fetching connections: ", e)
+                setError(e instanceof Error ? e.message : "Failed to fetch connections")
+            }
+        }
+
         fetchUser()
+        fetchConnections()
     }, [session, status, router])
 
     if (loading) {
@@ -204,9 +217,10 @@ export default function Profile() {
                         {/* Main Content */}
                         <div className="w-full md:w-2/3">
                             <Tabs defaultValue="about">
-                                <TabsList className="grid w-full grid-cols-2">
+                                <TabsList className="grid w-full grid-cols-3">
                                     <TabsTrigger value="about">About</TabsTrigger>
                                     <TabsTrigger value="projects">Projects</TabsTrigger>
+                                    <TabsTrigger value="connections">Connections</TabsTrigger>
                                 </TabsList>
                                 <TabsContent value="about" className="mt-4">
                                     <Card>
@@ -298,6 +312,50 @@ export default function Profile() {
                                                    </CardContent>
                                                  </Card>
                                                 ))}
+                                            </div>
+                                        </CardContent>
+                                    </Card>
+                                </TabsContent>
+                                 <TabsContent value="connections" className="mt-4">
+                                    <Card>
+                                        <CardHeader>
+                                            <CardTitle>My Connections</CardTitle>
+                                            <CardDescription>People you've connected with</CardDescription>
+                                        </CardHeader>
+                                        <CardContent>
+                                            <div className="space-y-4">
+                                                {connections.map((connection) => {
+                                                    const otherUser = connection.senderId === user?.id ? connection.receiver : connection.sender
+                                                    return (
+                                                    <div
+                                                        key={connection.id}
+                                                        className="flex items-center justify-between p-3 rounded-lg hover:bg-muted transition-colors"
+                                                    >
+                                                        <div className="flex items-center gap-3">
+                                                            <Link href={`/profile/${otherUser.id}`}>
+                                                                <Avatar className="bg-primary">
+                                                                    <AvatarFallback>
+                                                                        {otherUser.name.charAt(0)}
+                                                                    </AvatarFallback>
+                                                                </Avatar>
+                                                            </Link>
+                                                            <div>
+                                                                <Link href={`/profile/${otherUser.id}`}>
+                                                                    <h4 className="font-medium">
+                                                                        {otherUser.name}
+                                                                    </h4>
+                                                                </Link>
+                                                                <p className="text-sm text-muted-foreground">{otherUser.jobTitle}</p>
+                                                            </div>
+                                                        </div>
+                                                        <div className="flex gap-2">
+                                                            <Button size="sm" variant="ghost">
+                                                                <MessageSquare className="h-4 w-4" />
+                                                            </Button>
+                                                        </div>
+                                                    </div>
+                                                    )
+                                                })}
                                             </div>
                                         </CardContent>
                                     </Card>
