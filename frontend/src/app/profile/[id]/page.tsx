@@ -10,7 +10,6 @@ import {
   MapPin,
   Briefcase,
   MessageSquare,
-  UserPlus,
   ExternalLink,
   Clock,
   Github,
@@ -30,12 +29,12 @@ import { Badge } from "@/components/ui/badge"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { UserStats } from "@/types/user"
+import { ConnectButton } from "@/app/components/connections/connect-button"
 
 export default function ViewProfile() {
   const [userProfile, setUserProfile] = useState<UserStats | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [isConnected, setIsConnected] = useState(false)
 
   const { data: session, status } = useSession()
   const router = useRouter()
@@ -249,19 +248,7 @@ export default function ViewProfile() {
                   )}
 
                   <div className="mt-6 flex flex-col gap-2">
-                    <Button className="w-full" variant={isConnected ? "outline" : "default"}>
-                      {isConnected ? (
-                        <>
-                          <UserPlus className="mr-2 h-4 w-4" />
-                          Connected
-                        </>
-                      ) : (
-                        <>
-                          <UserPlus className="mr-2 h-4 w-4" />
-                          Connect
-                        </>
-                      )}
-                    </Button>
+                    <ConnectButton userId={userId} />
                     <Button variant="outline" className="w-full">
                       <MessageSquare className="mr-2 h-4 w-4" />
                       Message
