@@ -134,7 +134,7 @@ export default function Header() {
                                         Sign in
                                     </Button>
                                 </Link>
-                                <Link href="/auth/signin">
+                                <Link href="/register">
                                     <Button size="sm">Join now</Button>
                                 </Link>
                             </div>
