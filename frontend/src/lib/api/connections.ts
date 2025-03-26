@@ -1,34 +1,6 @@
 import api from "@/lib/api"
-import { ConnectionStatus } from '@/types/connections'
+import { Connection, ConnectionStatus, ConnectionStats } from '@/types/connections'
 
-export interface Connection {
-    id: string
-    senderId: string
-    receiverId: string
-    status: ConnectionStatus
-    createdAt: Date
-    respondedAt: Date | null
-    sender: {
-        id: string
-        email: string
-        name: string
-        jobTitle: string
-        shortBio: string
-    }
-    receiver: {
-        id: string
-        email: string
-        name: string
-        jobTitle: string
-        shortBio: string
-    }
-}
-
-export interface ConnectionStats {
-    totalConnections: number
-    pendingRequests: number
-    sentRequests: number
-}
 
 export const connectionsApi = {
     sendConnectionRequest: async (receiverId: string) => {
