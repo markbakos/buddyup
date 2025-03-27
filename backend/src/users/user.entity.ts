@@ -2,6 +2,7 @@ import {Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColu
 import {Ad} from "../ads/ad.entity";
 import {UserProfile} from "./user-profile.entity";
 import { Connection } from '../connections/entities/connection.entity';
+import { Message } from '../messages/entity/message.entity';
 
 @Entity('users')
 export class User {
@@ -40,4 +41,10 @@ export class User {
 
     @OneToMany(() => Connection, connection => connection.receiver)
     receivedConnections: Connection[];
+
+    @OneToMany(() => Message, message => message.sender)
+    sentMessages: Message[];
+
+    @OneToMany(() => Message, message => message.receiver)
+    receivedMessages: Message[];
 }

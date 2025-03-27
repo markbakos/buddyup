@@ -7,6 +7,7 @@ import {AuthModule} from "./auth/auth.module";
 import {ConfigModule} from "@nestjs/config";
 import {AdsModule} from "./ads/ads.module";
 import { ConnectionsModule } from './connections/connections.module';
+import { MessagesModule } from './messages/messages.module';
 
 @Module({
   imports: [
@@ -22,12 +23,13 @@ import { ConnectionsModule } from './connections/connections.module';
         database: process.env.DB_NAME || 'buddyup',
         autoLoadEntities: true,
         synchronize: true, //disable in production
-          logging: true,
+        logging: true,
       }),
       UsersModule,
       AuthModule,
       AdsModule,
       ConnectionsModule,
+      MessagesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
