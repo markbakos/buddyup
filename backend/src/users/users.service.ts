@@ -31,10 +31,22 @@ export class UsersService {
     }
 
     async findOneById(id: string): Promise<User>{
-        const user = await this.usersRepository.findOne({
-            where: {id},
-            select: ['id', 'name', 'email', 'createdAt', 'updatedAt']
-        });
+        if (!id) {
+            throw new NotFoundException('User ID is required');
+        }
+        
+        const queryBuilder = this.usersRepository
+            .createQueryBuilder('User')
+            .where('User.id = :id', { id })
+            .select([
+                'User.id',
+                'User.name',
+                'User.email',
+                'User.createdAt',
+                'User.updatedAt'
+            ]);
+        
+        const user = await queryBuilder.getOne();
 
         if (!user) {
             throw new NotFoundException(`User with id ${id} not found`);

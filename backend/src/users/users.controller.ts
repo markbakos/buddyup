@@ -26,7 +26,7 @@ export class UsersController {
     @UseGuards(JwtAuthGuard)
     @Get('current')
     async getCurrentUser(@Req() req: ExpressRequest): Promise<User> {
-        const userId = req.user.id;
+        const userId = req.user.userId;
         return this.usersService.findOneById(userId);
     }
 }
