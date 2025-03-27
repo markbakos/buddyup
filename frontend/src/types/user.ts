@@ -10,6 +10,14 @@ export interface User {
     updatedAt: Date
 }
 
+export interface ShortUser {
+    id: string
+    name: string
+    email: string
+    jobTitle?: string
+}
+
+
 export interface UserProfile {
     id: string
     user: User
