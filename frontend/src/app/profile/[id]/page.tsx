@@ -30,6 +30,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { UserStats } from "@/types/user"
 import { ConnectButton } from "@/app/components/connections/connect-button"
+import { MessageButton } from "@/app/components/messaging/message-button"
 
 export default function ViewProfile() {
   const [userProfile, setUserProfile] = useState<UserStats | null>(null)
@@ -249,10 +250,10 @@ export default function ViewProfile() {
 
                   <div className="mt-6 flex flex-col gap-2">
                     <ConnectButton userId={userId} />
-                    <Button variant="outline" className="w-full">
+                    <MessageButton recipient={userProfile} messageType="message">
                       <MessageSquare className="mr-2 h-4 w-4" />
                       Message
-                    </Button>
+                    </MessageButton>
                   </div>
                 </CardContent>
               </Card>
