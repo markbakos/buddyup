@@ -19,6 +19,7 @@ import {
 } from "lucide-react"
 import Header from "@/app/components/Header"
 import api from "@/lib/api"
+import Link from "next/link"
 
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
@@ -31,7 +32,6 @@ import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Collapsible, CollapsibleTrigger } from "@/components/ui/collapsible"
 import { Message } from "@/types/messages"
-
 
 export default function MessagesPage() {
   const [receivedMessages, setReceivedMessages] = useState<Message[]>([])
@@ -371,12 +371,16 @@ function MessageCard({
       <CardHeader className="pb-2">
         <div className="flex justify-between">
           <div className="flex items-center gap-4">
-            <Avatar className="h-12 w-12 border-2 border-white shadow">
-              <AvatarFallback className="bg-primary text-white">{person.name.charAt(0)}</AvatarFallback>
-            </Avatar>
+            <Link href={`/profile/${person.id}`}>
+              <Avatar className="h-12 w-12 border-2 border-white shadow">
+                <AvatarFallback className="bg-primary text-white">{person.name.charAt(0)}</AvatarFallback>
+              </Avatar>
+            </Link>
             <div>
               <CardTitle className="text-lg flex items-center gap-2">
-                {person.name}
+                <Link href={`/profile/${person.id}`}>
+                  {person.name}
+                </Link>
                 {!message.seen && !isSent && (
                   <Badge variant="default" className="text-xs">
                     New
