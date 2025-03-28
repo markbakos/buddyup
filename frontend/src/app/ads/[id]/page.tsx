@@ -4,7 +4,7 @@ import { useParams, useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import type { Ad } from "@/types/ads"
 import api from "@/lib/api"
-import { ArrowLeft, MapPin, Clock, Tag, Users, Briefcase, Share2, BookmarkPlus, MessageSquare } from "lucide-react"
+import { ArrowLeft, MapPin, Clock, Tag, Users, Briefcase, Share2, BookmarkPlus } from "lucide-react"
 import Header from "@/app/components/Header"
 import Link from "next/link"
 import { useSession } from "next-auth/react"
@@ -26,6 +26,7 @@ export default function AdDetailsPage() {
     const [ad, setAd] = useState<Ad | null>(null)
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
+    const [activeTab, setActiveTab] = useState("details")
 
     useEffect(() => {
         if (!session) {
@@ -53,6 +54,10 @@ export default function AdDetailsPage() {
             fetchAdDetails()
         }
     }, [adId])
+
+    const handleApplyNow = () => {
+        setActiveTab("roles")
+    }
 
     if (loading) {
         return (
@@ -187,7 +192,7 @@ export default function AdDetailsPage() {
                                 </CardHeader>
 
                                 <CardContent className="space-y-6">
-                                    <Tabs defaultValue="details">
+                                    <Tabs value={activeTab} onValueChange={setActiveTab}>
                                         <TabsList className="grid w-full grid-cols-2">
                                             <TabsTrigger value="details">Details</TabsTrigger>
                                             <TabsTrigger value="roles">Roles</TabsTrigger>
@@ -258,12 +263,8 @@ export default function AdDetailsPage() {
 
                                 <CardFooter className="flex flex-col items-start gap-4 sm:flex-row sm:justify-between">
                                     <div className="flex items-center">
-                                        <Button variant="default" size="lg" className="mr-2">
+                                        <Button variant="default" size="lg" className="mr-2" onClick={handleApplyNow}>
                                             Apply Now
-                                        </Button>
-                                        <Button variant="outline" size="lg">
-                                            <MessageSquare className="mr-2 h-4 w-4" />
-                                            Contact Poster
                                         </Button>
                                     </div>
                                     <div className="text-sm text-muted-foreground">ID: {ad.id.substring(0, 8)}</div>
