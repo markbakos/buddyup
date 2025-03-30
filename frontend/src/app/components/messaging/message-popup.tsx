@@ -151,7 +151,7 @@ export function MessagePopup({
     setIsPreviewMode(!isPreviewMode)
   }
 
-  const defaultDescription = description || `Send a message to ${recipient.name}`
+  const defaultDescription = description || `Send a${messageType === "message" ? " message" : "n application"} to ${recipient.name}`
 
   return (
     <Dialog open={open} onOpenChange={(open) => !open && onClose()}>
