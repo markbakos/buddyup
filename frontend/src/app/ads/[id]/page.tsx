@@ -15,6 +15,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Separator } from "@/components/ui/separator"
+import { MessageButton } from "@/app/components/messaging/message-button"
 
 export default function AdDetailsPage() {
     const params = useParams()
@@ -240,9 +241,18 @@ export default function AdDetailsPage() {
                                                             </CardContent>
                                                             {adRole.isOpen && (
                                                                 <CardFooter className="p-4 pt-0">
-                                                                    <Button size="sm" className="w-full">
+                                                                    <MessageButton 
+                                                                        recipient={{
+                                                                            id: String(ad.user.id),
+                                                                            name: ad.user.name,
+                                                                            email: ad.user.email,
+                                                                            jobTitle: ad.user.jobTitle
+                                                                        }} 
+                                                                        messageType="applying" 
+                                                                        jobTitle={adRole.role.name}
+                                                                    >
                                                                         Apply for this role
-                                                                    </Button>
+                                                                    </MessageButton>
                                                                 </CardFooter>
                                                             )}
                                                         </Card>
