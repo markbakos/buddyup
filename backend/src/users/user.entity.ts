@@ -3,6 +3,7 @@ import {Ad} from "../ads/ad.entity";
 import {UserProfile} from "./user-profile.entity";
 import { Connection } from '../connections/entities/connection.entity';
 import { Message } from '../messages/entity/message.entity';
+import { FeedPost } from '../feed-post/entities/feed-post.entity';
 
 @Entity('users')
 export class User {
@@ -47,4 +48,7 @@ export class User {
 
     @OneToMany(() => Message, message => message.receiver)
     receivedMessages: Message[];
+    
+    @OneToMany(() => FeedPost, feedPost => feedPost.user)
+    feedPosts: FeedPost[];
 }
