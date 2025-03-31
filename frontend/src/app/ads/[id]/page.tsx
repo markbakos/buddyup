@@ -11,7 +11,7 @@ import { useSession } from "next-auth/react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Separator } from "@/components/ui/separator"
@@ -289,12 +289,15 @@ export default function AdDetailsPage() {
                                 </CardHeader>
                                 <CardContent>
                                     <div className="flex items-center gap-3">
-                                        <Avatar>
-                                            <AvatarImage src="/placeholder.svg?height=40&width=40" />
-                                            <AvatarFallback>U</AvatarFallback>
-                                        </Avatar>
+                                        <Link href={`/profile/${ad.user.id}`}>
+                                            <Avatar>
+                                                <AvatarFallback>U</AvatarFallback>
+                                            </Avatar>
+                                        </Link>
                                         <div>
-                                            <p className="font-medium">{ad.user.name}</p>
+                                            <Link href={`/profile/${ad.user.id}`}>
+                                                <p className="font-medium">{ad.user.name}</p>
+                                            </Link>
                                             <p className="text-sm text-muted-foreground">Project Creator</p>
                                         </div>
                                     </div>
