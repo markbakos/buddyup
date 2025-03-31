@@ -19,6 +19,7 @@ import api from '@/lib/api';
 import { Ad } from "@/types/ads"
 import { connectionsApi } from "@/lib/api/connections"
 import { Connection } from "@/types/connections"
+import { MessageButton } from "../components/messaging/message-button"
 export default function Profile() {
     const [user, setUser] = useState<UserStats | null>(null)
     const [loading, setLoading] = useState(true)
@@ -349,9 +350,9 @@ export default function Profile() {
                                                             </div>
                                                         </div>
                                                         <div className="flex gap-2">
-                                                            <Button size="sm" variant="ghost">
+                                                            <MessageButton recipient={otherUser} messageType="message">
                                                                 <MessageSquare className="h-4 w-4" />
-                                                            </Button>
+                                                            </MessageButton>
                                                         </div>
                                                     </div>
                                                     )
