@@ -8,6 +8,7 @@ import {ConfigModule} from "@nestjs/config";
 import {AdsModule} from "./ads/ads.module";
 import { ConnectionsModule } from './connections/connections.module';
 import { MessagesModule } from './messages/messages.module';
+import { FeedPostModule } from './feed-post/feed-post.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { MessagesModule } from './messages/messages.module';
       AdsModule,
       ConnectionsModule,
       MessagesModule,
+      FeedPostModule,
   ],
   controllers: [AppController],
   providers: [AppService],
