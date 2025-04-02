@@ -56,4 +56,12 @@ export class ConnectionsController {
   removeConnection(@Request() req, @Param('id') id: string) {
     return this.connectionsService.deleteConnection(req.user.userId, id);
   }
+
+  @Get('count')
+  @UseGuards(JwtAuthGuard)
+  async getConnectionCount(@Request() req): Promise<{ count: number }> {
+    const userId = req.user.userId;
+    const count = await this.connectionsService.getConnectionCount(userId);
+    return { count };
+  }
 } 

@@ -145,4 +145,15 @@ export class ConnectionsService {
 
     await this.connectionsRepository.remove(connection);
   }
+
+  async getConnectionCount(userId: string): Promise<number> {
+    const connections = await this.connectionsRepository.count({
+      where: [
+        { sender: { id: userId }, status: ConnectionStatus.ACCEPTED },
+        { receiver: { id: userId }, status: ConnectionStatus.ACCEPTED }
+      ]
+    });
+    
+    return connections;
+  }
 } 
