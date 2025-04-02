@@ -6,7 +6,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
-import { Heart, MessageSquare, Share2, MoreHorizontal, Loader2, Bookmark, Flag, Trash2 } from "lucide-react"
+import { Heart, MoreHorizontal, Loader2, Bookmark, Flag, Trash2 } from "lucide-react"
 import {
   DropdownMenu,
   DropdownMenuContent,
