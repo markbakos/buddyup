@@ -320,7 +320,7 @@ export default function AdsPage() {
                                             <div className="flex items-center justify-between mb-4">
                                                 <p className="text-sm text-muted-foreground">
                                                     Showing {adsData.ads.length} results
-                                                    {keywords && <span> for "{keywords}"</span>}
+                                                    {keywords && <span> for &quot;{keywords}&quot;</span>}
                                                     {activeFiltersCount > 0 && <span> with filters</span>}
                                                 </p>
                                                 <Badge variant="outline" className="font-normal">
