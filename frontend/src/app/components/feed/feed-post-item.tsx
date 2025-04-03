@@ -71,8 +71,9 @@ export function FeedPostItem({ post, onPostLiked }: FeedPostItemProps) {
   const formatDate = (dateString: string) => {
     try {
       return formatDistanceToNow(new Date(dateString), { addSuffix: true })
-    } catch (e) {
+    } catch (_) {
       return "recently"
+
     }
   }
 
