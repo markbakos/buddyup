@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 
-export default function AdPosting({id, title, summary, description, location, metadata, tags, adRoles, createdAt, updatedAt}: Ad) {
+export default function AdPosting({id, title, summary,  location, tags, adRoles, createdAt}: Ad) {
     const [isRolesOpen, setIsRolesOpen] = useState(false)
 
     const formattedDate = new Date(createdAt).toLocaleDateString("en-US", {
