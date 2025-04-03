@@ -273,7 +273,7 @@ export default function Profile() {
                                     <Card>
                                         <CardHeader>
                                             <CardTitle>My Projects</CardTitle>
-                                            <CardDescription>Projects you're currently working on</CardDescription>
+                                            <CardDescription>Projects you&apos;re currently working on</CardDescription>
                                         </CardHeader>
                                         <CardContent>
                                             <div className="space-y-4">
@@ -321,7 +321,7 @@ export default function Profile() {
                                     <Card>
                                         <CardHeader>
                                             <CardTitle>My Connections</CardTitle>
-                                            <CardDescription>People you've connected with</CardDescription>
+                                            <CardDescription>People you&apos;ve connected with</CardDescription>
                                         </CardHeader>
                                         <CardContent>
                                             <div className="space-y-4">

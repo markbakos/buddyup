@@ -8,7 +8,6 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { ChevronLeft, Save, Plus, Trash2, Calendar, X } from "lucide-react"
 import Header from "@/app/components/Header"
-import type { UserStats } from "@/types/user"
 import api from "@/lib/api"
 
 import { Button } from "@/components/ui/button"
