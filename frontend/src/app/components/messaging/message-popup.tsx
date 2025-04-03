@@ -63,7 +63,7 @@ export interface MessagePopupProps {
   /**
    * Additional metadata for the message
    */
-  metadata?: Record<string, string>
+  metadata?: Record<string, string | undefined>
 
   /**
    * Function to call when the message is sent
