@@ -48,7 +48,7 @@ export default function RegisterPage() {
       })
 
       router.push("/auth/signin")
-    } catch (e) {
+    } catch (_) {
       setError("An error occurred. Please try again.")
     }
     setLoading(false)
