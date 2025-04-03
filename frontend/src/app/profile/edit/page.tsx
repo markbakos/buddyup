@@ -59,7 +59,6 @@ const profileFormSchema = z.object({
 type ProfileFormValues = z.infer<typeof profileFormSchema>
 
 export default function EditProfile() {
-  const [user, setUser] = useState<UserStats | null>(null)
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -113,7 +112,6 @@ export default function EditProfile() {
     async function fetchUser() {
       try {
         const response = await api.get("/profile")
-        setUser(response.data)
 
         form.reset({
           profession: response.data.profile?.profession || "",
@@ -333,7 +331,7 @@ export default function EditProfile() {
                           <Textarea placeholder="Tell us about yourself" className="min-h-32 resize-none" {...field} />
                         </FormControl>
                         <FormDescription>
-                          Write a short bio about yourself, your background, and what you're interested in.
+                          Write a short bio about yourself, your background, and what you&apos;re interested in.
                         </FormDescription>
                         <FormMessage />
                       </FormItem>
@@ -586,8 +584,8 @@ export default function EditProfile() {
                                         <SelectValue placeholder="Select degree" />
                                       </SelectTrigger>
                                       <SelectContent>
-                                        <SelectItem value="Bachelor">Bachelor's</SelectItem>
-                                        <SelectItem value="Master">Master's</SelectItem>
+                                        <SelectItem value="Bachelor">Bachelor&apos;s</SelectItem>
+                                        <SelectItem value="Master">Master&apos;s</SelectItem>
                                         <SelectItem value="PhD">PhD</SelectItem>
                                         <SelectItem value="Associate">Associate</SelectItem>
                                         <SelectItem value="Diploma">Diploma</SelectItem>
