@@ -328,7 +328,7 @@ export default function CreateAdPage() {
                     <CardHeader className="flex flex-row items-center justify-between">
                       <div>
                         <CardTitle>Roles Needed</CardTitle>
-                        <CardDescription>Specify the roles you're looking to fill for this project.</CardDescription>
+                        <CardDescription>Specify the roles you&apos;re looking to fill for this project.</CardDescription>
                       </div>
                       <Button
                         type="button"

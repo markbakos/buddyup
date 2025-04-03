@@ -146,7 +146,7 @@ export default function SignInPage() {
             </div>
           </CardContent>
           <CardFooter className="flex flex-col items-center justify-center p-6 bg-muted/50 gap-2 rounded-b-lg">
-            <p className="text-sm text-muted-foreground">Don't have an account?</p>
+            <p className="text-sm text-muted-foreground">Don&apos;t have an account?</p>
             <Link href="/register">
               <Button variant="link" className="p-0">
                 Create an account

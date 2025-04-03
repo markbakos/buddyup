@@ -261,7 +261,7 @@ export default function ConnectionRequestsPage() {
                     <UserPlus className="h-12 w-12 text-muted-foreground mx-auto mb-4 opacity-20" />
                     <h3 className="text-lg font-medium">No pending requests</h3>
                     <p className="text-muted-foreground mt-1">
-                      You don't have any pending connection requests at the moment.
+                      You don&apos;t have any pending connection requests at the moment.
                     </p>
                   </div>
                 )}
@@ -289,7 +289,7 @@ export default function ConnectionRequestsPage() {
                     <CheckCircle className="h-12 w-12 text-muted-foreground mx-auto mb-4 opacity-20" />
                     <h3 className="text-lg font-medium">No accepted requests</h3>
                     <p className="text-muted-foreground mt-1">
-                      You haven't accepted any connection requests yet.
+                      You haven&apos;t accepted any connection requests yet.
                     </p>
                   </div>
                 )}
@@ -317,7 +317,7 @@ export default function ConnectionRequestsPage() {
                     <XCircle className="h-12 w-12 text-muted-foreground mx-auto mb-4 opacity-20" />
                     <h3 className="text-lg font-medium">No declined requests</h3>
                     <p className="text-muted-foreground mt-1">
-                      You haven't declined any connection requests.
+                      You haven&apos;t declined any connection requests.
                     </p>
                   </div>
                 )}
@@ -374,7 +374,7 @@ function ConnectionRequestCard({
       <CardContent>
         {request.sender.shortBio && (
           <div className="bg-muted/30 p-3 rounded-md text-sm italic">
-            "{request.sender.shortBio}"
+            &quot;{request.sender.shortBio}&quot;
           </div>
         )}
       </CardContent>
