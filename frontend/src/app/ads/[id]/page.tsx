@@ -263,7 +263,7 @@ export default function AdDetailsPage() {
                                                     <Briefcase className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
                                                     <h3 className="text-lg font-medium">No roles specified</h3>
                                                     <p className="text-muted-foreground mt-1">
-                                                        This opportunity doesn't have any specific roles listed.
+                                                        This opportunity doesn&apos;t have any specific roles listed.
                                                     </p>
                                                 </div>
                                             )}
