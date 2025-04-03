@@ -26,7 +26,7 @@ export interface Ad {
     location: string
     userId: string
     user: User
-    metadata: Record<string, any>
+    metadata: Record<string, string>
     tags: Tag[]
     adRoles: AdRole[]
     createdAt: Date
