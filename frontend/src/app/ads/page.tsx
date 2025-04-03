@@ -356,7 +356,7 @@ export default function AdsPage() {
                                                 </div>
                                                 <h2 className="text-xl font-semibold">No opportunities found</h2>
                                                 <p className="text-muted-foreground mt-2 text-center max-w-md">
-                                                    We couldn't find any opportunities matching your search criteria.
+                                                    We couldn&apos;t find any opportunities matching your search criteria.
                                                     Try adjusting your filters
                                                     or search terms.
                                                 </p>
