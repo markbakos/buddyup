@@ -144,15 +144,29 @@ export default function EditProfile() {
     try {
       const { ...profileData } = data
 
-      const formattedExperience = profileData.experience?.map(exp => ({
-        ...exp,
-        current: !exp.endDate,
-      }))
+      const formattedExperience = profileData.experience?.map(exp => {
+        const formattedExp = { ...exp }
 
-      const formattedEducation = profileData.education?.map(edu => ({
-        ...edu,
-        current: !edu.endDate,
-      }))
+        if (!formattedExp.endDate) {
+          delete formattedExp.endDate
+        }
+
+        formattedExp.current = !formattedExp.endDate
+
+        return formattedExp
+      })
+
+      const formattedEducation = profileData.education?.map(edu => {
+        const formattedEdu = { ...edu }
+
+        if (!formattedEdu.endDate) {
+          delete formattedEdu.endDate
+        }
+
+        formattedEdu.current = !formattedEdu.endDate
+
+        return formattedEdu
+      })
 
       const updateData = {
         ...profileData,
