@@ -186,7 +186,7 @@ export default function ViewProfile() {
                     </Avatar>
                   </div>
                   <CardTitle className="mt-4 text-2xl">{userProfile.name}</CardTitle>
-                  <CardDescription className="text-sm">{userProfile.profile.profession}</CardDescription>
+                  <CardDescription className="text-sm">{userProfile.profile?.profession || "BuddyUp User"}</CardDescription>
                   <div className="flex justify-center gap-2 mt-2">
                     <Badge variant="secondary">{userProfile.ads?.length || 0} projects</Badge>
                   </div>
@@ -203,11 +203,11 @@ export default function ViewProfile() {
                     </div>
                     <div className="flex items-center gap-2 text-sm">
                       <MapPin className="h-4 w-4 text-muted-foreground" />
-                      <span className="text-muted-foreground">{userProfile.profile.location}</span>
+                      <span className="text-muted-foreground">{userProfile.profile?.location || "Location not set"}</span>
                     </div>
                     <div className="flex items-center gap-2 text-sm">
                       <Briefcase className="h-4 w-4 text-muted-foreground" />
-                      <span className="text-muted-foreground">{userProfile.profile.profession}</span>
+                      <span className="text-muted-foreground">{userProfile.profile?.profession || "Profession not set"}</span>
                     </div>
                   </div>
 
