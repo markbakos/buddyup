@@ -1,7 +1,7 @@
 "use client"
 
 import { useRouter, useSearchParams } from "next/navigation"
-import {useEffect, useState} from "react"
+import { useEffect, useState, Suspense } from "react"
 import AdPosting from "@/app/ads/AdPosting"
 import type { AdsResponse } from "@/types/ads"
 import Header from "@/app/components/Header"
@@ -24,7 +24,7 @@ interface Filters {
     status: string[]
 }
 
-export default function AdsPage() {
+function AdsPageContent() {
     const router = useRouter()
     const searchParams = useSearchParams()
     const [keywords, setKeywords] = useState(searchParams.get("keywords") || "")
@@ -527,4 +527,25 @@ export default function AdsPage() {
             </main>
         </div>
     )
+}
+
+export default function AdsPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 pt-16">
+      <Header/>
+      <main className="container mx-auto px-4 py-8 mt-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex justify-center items-center">
+            <Skeleton className="h-12 w-12 rounded-full" />
+            <div className="space-y-2">
+              <Skeleton className="h-4 w-[250px]" />
+              <Skeleton className="h-4 w-[200px]" />
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>}>
+      <AdsPageContent />
+    </Suspense>
+  )
 }
