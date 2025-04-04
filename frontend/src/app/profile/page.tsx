@@ -246,7 +246,7 @@ export default function Profile() {
                                                         <div key={experience.company} className="border-l-2 border-primary pl-4 py-1">
                                                             <h4 className="font-medium">{experience.company}</h4>
                                                             <p className="text-sm text-muted-foreground">{new Date(experience.startDate).toLocaleDateString()} -
-                                                                {experience?.endDate ? new Date(experience.endDate).toLocaleDateString() : " Present"}</p>
+                                                                {experience?.endDate ? " " + new Date(experience.endDate).toLocaleDateString() : " Present"}</p>
                                                             <p className="text-sm mt-1">
                                                                 {experience.description}
                                                             </p>
@@ -262,7 +262,7 @@ export default function Profile() {
                                                         <h4 className="font-medium"><span className="font-semibold">{education.field}</span> at {education.institution}</h4>
                                                         <p className="text-sm text-gray-900">{education.degree} Degree</p>
                                                         <p className="text-sm text-muted-foreground">{new Date(education.startDate).toLocaleDateString()} -
-                                                            {education?.endDate ? new Date(education.endDate).toLocaleDateString() : " Present"}</p>
+                                                            {education?.endDate ? " " + new Date(education.endDate).toLocaleDateString() : " Present"}</p>
                                                     </div>
                                                 ))}
                                             </div>
