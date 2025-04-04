@@ -25,9 +25,18 @@ export default function Profile() {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
     const [connections, setConnections] = useState<Connection[]>([])
+    const [isMounted, setIsMounted] = useState(true)
 
     const {data:session, status} = useSession()
     const router = useRouter()
+
+    useEffect(() => {
+        setIsMounted(true)
+        
+        return () => {
+            setIsMounted(false)
+        }
+    }, [])
 
     useEffect(() => {
         if (status === "loading") {
@@ -39,32 +48,41 @@ export default function Profile() {
             return
         }
 
-        async function fetchUser() {
+        const controller = new AbortController()
+        const signal = controller.signal
+
+        async function fetchData() {
             try {
-                const response = await api.get("/profile")
-                setUser(response.data)
-                console.log(response.data)
+                if (isMounted) setLoading(true)
+                
+                const [userResponse, connectionsResponse] = await Promise.all([
+                    api.get("/profile", { signal }),
+                    connectionsApi.getConnections()
+                ])
+                
+                if (isMounted) {
+                    setUser(userResponse.data)
+                    setConnections(connectionsResponse)
+                    setLoading(false)
+                    setError(null)
+                }
             } catch (e) {
-                console.error("Error fetching user: ", e)
-                setError(e instanceof Error ? e.message : "Failed to fetch user")
-            } finally {
-                setLoading(false)
+                console.error("Error fetching data: ", e)
+                if (isMounted && !(e instanceof DOMException && e.name === 'AbortError')) {
+                    setError(e instanceof Error ? e.message : "Failed to fetch data")
+                    setLoading(false)
+                }
             }
         }
 
-        async function fetchConnections() {
-            try {
-                const connections = await connectionsApi.getConnections()
-                setConnections(connections)
-            } catch (e) {
-                console.error("Error fetching connections: ", e)
-                setError(e instanceof Error ? e.message : "Failed to fetch connections")
-            }
-        }
+        fetchData()
 
-        fetchUser()
-        fetchConnections()
-    }, [session, status, router])
+        return () => {
+            controller.abort()
+        }
+    }, [session, status, router, isMounted])
+
+    const isDataReady = !loading && user && user.profile
 
     if (loading) {
         return (
@@ -131,6 +149,10 @@ export default function Profile() {
                 </main>
             </div>
         )
+    }
+
+    if (!isDataReady && !error) {
+        return null
     }
 
     return (

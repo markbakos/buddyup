@@ -36,11 +36,19 @@ export default function ViewProfile() {
   const [userProfile, setUserProfile] = useState<UserStats | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [isMounted, setIsMounted] = useState(true)
 
   const { data: session, status } = useSession()
   const router = useRouter()
   const params = useParams()
   const userId = params.id as string
+
+  useEffect(() => {
+    setIsMounted(true)
+    return () => {
+      setIsMounted(false)
+    }
+  }, [])
 
   useEffect(() => {
     if (status === "loading") {
@@ -52,22 +60,35 @@ export default function ViewProfile() {
       return
     }
 
+    const controller = new AbortController()
+    const signal = controller.signal
+
     async function fetchUserProfile() {
       try {
-        setLoading(true)
-        const response = await api.get(`/profile/${userId}`)
-        setUserProfile(response.data)
-        console.log(response.data)
+        if (isMounted) setLoading(true)
+        
+        const response = await api.get(`/profile/${userId}`, { signal })
+        
+        if (isMounted) {
+          setUserProfile(response.data)
+          setLoading(false)
+          setError(null)
+        }
       } catch (e) {
         console.error("Error fetching user profile: ", e)
-        setError(e instanceof Error ? e.message : "Failed to fetch user profile")
-      } finally {
-        setLoading(false)
+        if (isMounted && !(e instanceof DOMException && e.name === 'AbortError')) {
+          setError(e instanceof Error ? e.message : "Failed to fetch user profile")
+          setLoading(false)
+        }
       }
     }
 
     fetchUserProfile()
-  }, [session, status, router, userId])
+
+    return () => {
+      controller.abort()
+    }
+  }, [session, status, router, userId, isMounted])
 
   const getSocialIcon = (platform: string) => {
     switch (platform.toLowerCase()) {
@@ -83,11 +104,20 @@ export default function ViewProfile() {
   }
 
   const formatDate = (dateString: Date) => {
-    return new Date(dateString).toLocaleDateString("en-US", {
-      month: "long",
-      year: "numeric",
-    })
+    if (!dateString) return ""
+    
+    try {
+      return new Date(dateString).toLocaleDateString("en-US", {
+        month: "long",
+        year: "numeric",
+      })
+    } catch (e) {
+      console.error("Error formatting date:", e)
+      return ""
+    }
   }
+
+  const isDataReady = !loading && userProfile && userProfile.profile
 
   if (loading) {
     return (
@@ -154,6 +184,10 @@ export default function ViewProfile() {
         </main>
       </div>
     )
+  }
+  
+  if (!isDataReady && !error) {
+    return null
   }
 
   return (
