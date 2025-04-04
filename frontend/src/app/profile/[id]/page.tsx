@@ -247,14 +247,17 @@ export default function ViewProfile() {
                       </div>
                     </div>
                   )}
-
+                {session?.user?.id !== userId && (
                   <div className="mt-6 flex flex-col gap-2">
-                    <ConnectButton userId={userId} />
+                   
+                      <ConnectButton userId={userId} />
+                   
                     <MessageButton recipient={userProfile} messageType="message">
                       <MessageSquare className="mr-2 h-4 w-4" />
                       Message
                     </MessageButton>
                   </div>
+                 )}
                 </CardContent>
               </Card>
             </div>
