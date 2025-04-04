@@ -155,7 +155,7 @@ export default function Profile() {
                                         </Avatar>
                                     </div>
                                     <CardTitle className="mt-4 text-2xl">{user?.name}</CardTitle>
-                                    <CardDescription className="text-sm">Product Designer at BuddyUp</CardDescription>
+                                    <CardDescription className="text-sm">{user?.profile?.profession || "BuddyUp User"}</CardDescription>
                                     <div className="flex justify-center gap-2 mt-2">
                                         <Badge variant="secondary">{user?.ads?.length} projects</Badge>
                                     </div>
@@ -180,11 +180,11 @@ export default function Profile() {
                                         </div>
                                         <div className="flex items-center gap-2 text-sm">
                                             <MapPin className="h-4 w-4 text-muted-foreground"/>
-                                            <span className="text-muted-foreground">{user?.profile.location}</span>
+                                            <span className="text-muted-foreground">{user?.profile?.location || "Location not set"}</span>
                                         </div>
                                         <div className="flex items-center gap-2 text-sm">
                                             <Briefcase className="h-4 w-4 text-muted-foreground"/>
-                                            <span className="text-muted-foreground">{user?.profile.profession}</span>
+                                            <span className="text-muted-foreground">{user?.profile?.profession || "Profession not set"}</span>
                                         </div>
                                     </div>
 
