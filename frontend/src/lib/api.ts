@@ -5,26 +5,43 @@ const API_BASE_URL = 'http://localhost:4000'
 
 const api = axios.create({
     baseURL: API_BASE_URL,
+    timeout: 15000,
 })
 
 api.interceptors.request.use(async (config) => {
-    const session = await getSession()
-    
-    if (session?.accessToken) {
-        config.headers.Authorization = `Bearer ${session.accessToken}`
+    try {
+        const session = await getSession()
+        
+        if (session?.accessToken) {
+            config.headers.Authorization = `Bearer ${session.accessToken}`
+        }
+        
+        return config;
+    } catch (error) {
+        console.error('Error in request interceptor:', error);
+        return config;
     }
-    
-    return config;
 }, (error) => {
+    console.error('Request interceptor error:', error)
     return Promise.reject(error)
 })
 
 api.interceptors.response.use(
     (response) => response,
-    (error) => {
+    async (error) => {
+        if (!error.response) {
+            console.error('Network error or server not responding:', error.message)
+            return Promise.reject(new Error('Network error: Please check your connection and try again.'))
+        }
+        
         if (error.response?.status === 401) {
             console.error('Authentication error. Token may be invalid or expired.')
         }
+        
+        if (error.response?.status >= 500) {
+            console.error('Server error:', error.response)
+        }
+        
         return Promise.reject(error)
     }
 )
