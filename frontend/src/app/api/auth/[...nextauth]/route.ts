@@ -1,6 +1,6 @@
-import axios from "axios";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import api from "@/lib/api"
 
 const handler = NextAuth({
     providers: [
@@ -11,57 +11,58 @@ const handler = NextAuth({
                 password: { label: "Password", type: "password" },
             },
             async authorize(credentials) {
-                const loginRes = await axios.post("http://localhost:4000/auth/login", {
-                    email: credentials?.email,
-                    password: credentials?.password,
-                })
-
-                const loginData = loginRes.data
-
-                if (!loginData.access_token) {
-                    return null
-                }
-
                 try {
-                    const userRes = await axios.get("http://localhost:4000/users/current", {
-                        headers: {
-                            Authorization: `Bearer ${loginData.access_token}`
-                        }
+                    const loginRes = await api.post("/auth/login", {
+                        email: credentials?.email,
+                        password: credentials?.password,
                     })
-                    
-                    const userData = userRes.data
-                    
-                    const connectionsRes = await axios.get("http://localhost:4000/connections/count", {
-                        headers: {
-                            Authorization: `Bearer ${loginData.access_token}`
-                        }
-                    })
-                    
-                    const connectionsData = connectionsRes.data
-                    const connectionCount = connectionsData.count || 0
-                    
-                    const projectCount = 0
 
-                    return {
-                        id: userData.id,
-                        email: userData.email,
-                        name: userData.name,
-                        jobTitle: userData.jobTitle || undefined,
-                        shortBio: userData.shortBio || undefined,
-                        connectionCount,
-                        projectCount,
-                        accessToken: loginData.access_token,
+                    const loginData = loginRes.data
+
+                    if (!loginData.access_token) {
+                        return null
                     }
-                } catch (error) {
-                    console.error("Error fetching user data:", error)
-                    return {
-                        id: loginData.userId || "1",
-                        email: credentials?.email || "",
-                        name: "User",
-                        connectionCount: 0,
-                        projectCount: 0,
-                        accessToken: loginData.access_token,
+
+                    try {
+                        const authConfig = {
+                            headers: {
+                                Authorization: `Bearer ${loginData.access_token}`
+                            }
+                        }
+                        
+                        const [userRes, connectionsRes] = await Promise.all([
+                            api.get("/users/current", authConfig),
+                            api.get("/connections/count", authConfig)
+                        ])
+                        
+                        const userData = userRes.data
+                        const connectionCount = connectionsRes.data.count || 0
+                        const projectCount = 0
+
+                        return {
+                            id: userData.id,
+                            email: userData.email,
+                            name: userData.name,
+                            jobTitle: userData.jobTitle || undefined,
+                            shortBio: userData.shortBio || undefined,
+                            connectionCount,
+                            projectCount,
+                            accessToken: loginData.access_token,
+                        }
+                    } catch (error) {
+                        console.error("Error fetching user data:", error)
+                        return {
+                            id: loginData.userId || "1",
+                            email: credentials?.email || "",
+                            name: "User",
+                            connectionCount: 0,
+                            projectCount: 0,
+                            accessToken: loginData.access_token,
+                        }
                     }
+                } catch (loginError) {
+                    console.error("Login failed:", loginError)
+                    return null
                 }
             },
         }),
