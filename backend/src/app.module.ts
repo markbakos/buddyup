@@ -23,7 +23,7 @@ import { FeedPostModule } from './feed-post/feed-post.module';
         password: process.env.DB_PASSWORD || 'password',
         database: process.env.DB_NAME || 'buddyup',
         autoLoadEntities: true,
-        synchronize: true, //disable in production
+        synchronize: false,
         logging: true,
       }),
       UsersModule,
