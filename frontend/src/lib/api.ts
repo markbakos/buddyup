@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { getSession } from 'next-auth/react';
 
-const API_BASE_URL = 'http://localhost:4000'
+const API_BASE_URL = 'https://buddyup-backend.onrender.com'
 
 const api = axios.create({
     baseURL: API_BASE_URL,
