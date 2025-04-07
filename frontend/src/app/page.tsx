@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react"
 import { useSession } from "next-auth/react"
-import { useRouter } from "next/navigation"
 import Header from "@/app/components/Header"
 import { CreatePostForm } from "@/app/components/feed/create-post-form"
 import { FeedPostList } from "@/app/components/feed/feed-post-list"
@@ -16,7 +15,6 @@ import type { FeedPost } from "@/types/feed-post"
 
 export default function HomePage() {
   const { data: session, status } = useSession()
-  const router = useRouter()
   const [feedPosts, setFeedPosts] = useState<FeedPost[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -25,11 +23,6 @@ export default function HomePage() {
 
   useEffect(() => {
     if (status === "loading") return
-
-    if (!session) {
-      router.push("/auth/signin")
-      return
-    }
 
     const fetchFeedPosts = async () => {
       try {
@@ -45,7 +38,7 @@ export default function HomePage() {
     }
 
     fetchFeedPosts()
-  }, [session, status, router, refreshTrigger])
+  }, [status, refreshTrigger])
 
   const handlePostCreated = (newPost: FeedPost) => {
     setFeedPosts((prevPosts) => [newPost, ...prevPosts])
@@ -74,20 +67,21 @@ export default function HomePage() {
       <Header />
       <main className="container mx-auto px-4 py-8 pt-32">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-          {/* Left Sidebar */}
-          <div className="hidden lg:block lg:col-span-3">
-            <FeedSidebar />
-          </div>
+          {session && (
+            <div className="hidden lg:block lg:col-span-3">
+              <FeedSidebar />
+            </div>
+          )}
 
           {/* Main Content */}
-          <div className="col-span-1 lg:col-span-6 space-y-6">
-            <CreatePostForm onPostCreated={handlePostCreated} />
+          <div className={`col-span-1 ${session ? 'lg:col-span-6' : 'lg:col-span-8 lg:col-start-3'} space-y-6`}>
+            {session && <CreatePostForm onPostCreated={handlePostCreated} />}
 
             <Tabs defaultValue="all" value={activeTab} onValueChange={setActiveTab} className="w-full">
               <div className="flex items-center justify-between mb-2">
                 <TabsList className="grid w-full max-w-md grid-cols-3">
                   <TabsTrigger value="all">All Posts</TabsTrigger>
-                  <TabsTrigger value="following">Following</TabsTrigger>
+                  {session && <TabsTrigger value="following">Following</TabsTrigger>}
                   <TabsTrigger value="trending">Trending</TabsTrigger>
                 </TabsList>
                 <Button variant="ghost" size="sm" onClick={handleRefresh} disabled={loading}>
@@ -109,11 +103,13 @@ export default function HomePage() {
                 )}
               </TabsContent>
 
-              <TabsContent value="following" className="mt-4">
-                <div className="text-center py-8 text-muted-foreground">
-                  Posts from people you follow will appear here.
-                </div>
-              </TabsContent>
+              {session && (
+                <TabsContent value="following" className="mt-4">
+                  <div className="text-center py-8 text-muted-foreground">
+                    Posts from people you follow will appear here.
+                  </div>
+                </TabsContent>
+              )}
 
               <TabsContent value="trending" className="mt-4">
                 <div className="text-center py-8 text-muted-foreground">Trending posts will appear here.</div>
@@ -122,9 +118,11 @@ export default function HomePage() {
           </div>
 
           {/* Right Sidebar */}
-          <div className="hidden lg:block lg:col-span-3">
-            {/* add right sidebar here */}
-          </div>
+          {session && (
+            <div className="hidden lg:block lg:col-span-3">
+              {/* add right sidebar here */}
+            </div>
+          )}
         </div>
       </main>
     </div>
