@@ -95,6 +95,7 @@ export function FeedPostItem({ post, onPostLiked }: FeedPostItemProps) {
                 {post.user.jobTitle || "BuddyUp User"} • {formatDate(post.createdAt)}
               </p>
             </div>
+            { session ?
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size="icon" className="h-8 w-8">
@@ -139,6 +140,11 @@ export function FeedPostItem({ post, onPostLiked }: FeedPostItemProps) {
                 )}
               </DropdownMenuContent>
             </DropdownMenu>
+            : 
+            <div>
+              
+            </div>
+              }
           </div>
         </div>
       </CardHeader>
@@ -154,22 +160,28 @@ export function FeedPostItem({ post, onPostLiked }: FeedPostItemProps) {
             {post.likesCount} {post.likesCount === 1 ? "like" : "likes"}
           </span>
         </div>
-        <div className="flex gap-1">
-          <Button
-            variant="ghost"
-            size="sm"
-            className={`gap-1 ${post.currentUserLiked ? "text-red-500" : ""}`}
-            onClick={handleLikeToggle}
-            disabled={isLiking}
-          >
-            {isLiking ? (
-              <Loader2 className="h-4 w-4 animate-spin" />
-            ) : (
-              <Heart className={`h-4 w-4 ${post.currentUserLiked ? "fill-red-500 text-red-500" : ""}`} />
-            )}
-            Like
-          </Button>
-        </div>
+        { session ?
+          <div className="flex gap-1">
+            <Button
+              variant="ghost"
+              size="sm"
+              className={`gap-1 ${post.currentUserLiked ? "text-red-500" : ""}`}
+              onClick={handleLikeToggle}
+              disabled={isLiking}
+            >
+              {isLiking ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <Heart className={`h-4 w-4 ${post.currentUserLiked ? "fill-red-500 text-red-500" : ""}`} />
+              )}
+              Like
+            </Button>
+          </div>
+           :
+           <div>
+
+           </div>
+           }
       </CardFooter>
     </Card>
   )
