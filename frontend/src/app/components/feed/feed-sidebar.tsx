@@ -12,7 +12,7 @@ export function FeedSidebar() {
     { icon: Briefcase, label: "My Projects", href: "/profile?tab=projects" },
     { icon: Users, label: "Connections", href: "/profile?tab=connections" },
     { icon: MessageSquare, label: "Messages", href: "/messages" },
-    { icon: Bell, label: "Notifications", href: "/alerts/connections" },
+    { icon: Bell, label: "Notifications", href: "/alerts" },
     { icon: Bookmark, label: "Saved Items", href: "/saved" },
   ]
 
