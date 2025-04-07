@@ -7,6 +7,7 @@ import type { AdsResponse } from "@/types/ads"
 import Header from "@/app/components/Header"
 import api from "@/lib/api"
 import Link from "next/link"
+import { useSession } from "next-auth/react"
 
 import { Search, ArrowUpDown, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -27,6 +28,7 @@ interface Filters {
 function AdsPageContent() {
     const router = useRouter()
     const searchParams = useSearchParams()
+    const { data: session } = useSession()
     const [keywords, setKeywords] = useState(searchParams.get("keywords") || "")
     const [adsData, setAdsData] = useState<AdsResponse | null>()
     const [error, setError] = useState<string | null>(null)
@@ -173,9 +175,11 @@ function AdsPageContent() {
                             <h1 className="text-3xl font-bold tracking-tight">Discover Opportunities</h1>
                             <p className="text-muted-foreground mt-1">Find your next collaboration or project</p>
                         </div>
-                        <Link href="/ads/post">
-                            <Button variant="default">Post New Ad</Button>
-                        </Link>
+                        {session && (
+                            <Link href="/ads/post">
+                                <Button variant="default">Post New Ad</Button>
+                            </Link>
+                        )}
                     </div>
 
                     <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-8">
