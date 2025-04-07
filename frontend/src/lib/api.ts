@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getSession } from 'next-auth/react';
+import { getSession, signOut } from 'next-auth/react';
 
 const API_BASE_URL = 'https://buddyup-backend.onrender.com'
 
@@ -36,6 +36,8 @@ api.interceptors.response.use(
         
         if (error.response?.status === 401) {
             console.error('Authentication error. Token may be invalid or expired.')
+            await signOut({ redirect: true, callbackUrl: '/auth/signin' })
+            return Promise.reject(new Error('Session expired. Please log in again.'))
         }
         
         if (error.response?.status >= 500) {
