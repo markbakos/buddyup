@@ -22,6 +22,11 @@ export default function Header() {
     const navItems = [
         { name: "Home", icon: Home, href: "/" },
         { name: "Discover", icon: Newspaper, href: "/ads" },
+    ]
+
+    const authNavItems = [
+        { name: "Home", icon: Home, href: "/" },
+        { name: "Discover", icon: Newspaper, href: "/ads" },
         { name: "Messages", icon: MessageSquare, href: "/messages" },
         { name: "Alerts", icon: Bell, href: "/alerts" },
     ]
@@ -75,7 +80,7 @@ export default function Header() {
 
                     <div className="flex items-center space-x-1 sm:space-x-4">
                         <nav className="flex items-center space-x-1 sm:space-x-4">
-                            {navItems.map((item) => (
+                            {(session ? authNavItems : navItems).map((item) => (
                                 <Link
                                     key={item.name}
                                     href={item.href}
