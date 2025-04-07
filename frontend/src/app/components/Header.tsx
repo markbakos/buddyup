@@ -4,7 +4,7 @@ import Link from "next/link"
 import { useState, useEffect} from "react"
 import { useSession, signOut } from "next-auth/react"
 
-import { Home, Newspaper, MessageSquare, Users, User, Bell, Search } from "lucide-react"
+import { Home, Newspaper, MessageSquare, Users, User, Bell, Search, LogOut } from "lucide-react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import {
@@ -123,7 +123,8 @@ export default function Header() {
                                     </DropdownMenuItem>
                                     <DropdownMenuSeparator/>
                                     <DropdownMenuItem onClick={() => signOut()}
-                                                      className="text-red-600 focus:text-red-600">
+                                                      className="text-red-600 focus:text-red-600 cursor-pointer">
+                                        <LogOut className="mr-2 h-4 w-4" />
                                         Sign out
                                     </DropdownMenuItem>
                                 </DropdownMenuContent>
